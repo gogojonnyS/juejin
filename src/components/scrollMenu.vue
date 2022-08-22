@@ -22,7 +22,7 @@
 export default {
     methods: {
         handleClick() {
-            alert("button click");
+            this.$router.push("/creator")
         },
     },
 };

@@ -10,6 +10,7 @@ import live from '../pages/live/index'
 import event from '../pages/event/index'
 import homeTags from "../pages/home/homeTags";
 import courseTags from "../pages/course/courseTags";
+import creator from "../pages/creator/index";
 
 const routes = [
 	{
@@ -49,7 +50,11 @@ const routes = [
 				component:event
 			},
 		]
-	}
+	},
+	{
+		path:'/creator',
+		component:creator
+	},
 ]
 
 const router = new VueRouter({
