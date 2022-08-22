@@ -33,14 +33,13 @@ server.use(express.urlencoded({
 }))
 
 // 一级路由
-server.on('/', function (req, res) {
-    console.log(req)
-})
-server.get('/', function (req, res, next) {
-    res.render('index', {
-        title: 'Express'
-    });
-});
+// server.get('/', function (req, res, next) {
+//     res.render('index', {
+//         title: 'Express'
+//     });
+// });
+server.use("/post", require("./routers/post"))
+
 
 
 // server.use("/post", require("./routers/forum/post"))

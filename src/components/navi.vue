@@ -44,7 +44,9 @@
                 <ul class="right">
                     <ul>
                         <!-- 搜索框开始 -->
-                        <search class="search" v-show="windowWidth > 350"></search><!-- 搜索框结束 -->
+                        <search :issearchbig="issearchbig" class="search" v-show="windowWidth > 350">
+                        </search>
+                        <!-- 搜索框结束 -->
                         <!-- 下拉菜单开始 -->
                         <scrollMenu class="scrollMenu" v-show="windowWidth > 800"></scrollMenu><!-- 下拉菜单结束 -->
                     </ul>
@@ -77,7 +79,7 @@ export default {
     data() {
         return {
             windowWidth: 1200,
-
+            issearchbig: false
         }
     },
     components: {
@@ -102,6 +104,11 @@ export default {
                 hight: window.innerHeight
             }
             this.windowWidth = windowInfo.width
+            if (this.windowWidth > 1070 && this.windowWidth < 1190) {
+                this.issearchbig = true
+            } else {
+                this.issearchbig = false
+            }
         }
     },
     created() {
@@ -211,6 +218,10 @@ export default {
                     >.search {
                         width: 260px;
                         margin-right: 0;
+                    }
+
+                    >.search-react {
+                        width: 374px;
                     }
 
                     >.scrollMenu {

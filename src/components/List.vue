@@ -1,22 +1,20 @@
 <template>
 	<div id="list-container">
 		<router-link to="#">
-			<div class="entry">
+			<div class="entry" @click="test">
 				<!-- 头部区域 -->
 				<div class="meta-container">
-					<a class="user-message">
+					<a class="user-message" @click.stop="intoAuthor">
 						<div class="username">
-							用户信息
+							{{ authorname }}
 						</div>
 					</a>
 					<div class="time">
-						8天前
+						{{ setDate(date) }}
 					</div>
 					<div class="tag-list">
-						<a calss="tag">javascript</a>
-						<a calss="tag">webpack</a>
-						<a calss="tag">vue</a>
-						<a calss="tag">安卓</a>
+						<a calss="tag" v-for="(item, index) in keyword" :key="index"
+							:class="{ 'isshowbot': index == (keyword.length - 1) }">{{ item }}</a>
 					</div>
 				</div>
 
@@ -24,48 +22,46 @@
 				<div class="content">
 					<div class="content-main">
 						<div class="content-title">
-							<a href="">是时候放下console.log一把梭了，快来学学如何使用VS Code debug代码吧~VS
-								Code的关键特性之一就是它具有强大的调试功能，不学白不学啦</a>
+							<a href="">{{ title }}</a>
 						</div>
 						<div class="abstract">
-							<a href="">是时候放下console.log一把梭了，快来学学如何使用VS Code debug代码吧~VS
-								Code的关键特性之一就是它具有强大的调试功能，不学白不学啦</a>
+							<a href="">{{ abstract.slice(0, 60) }}</a>
 						</div>
 						<ul class="action-list">
-							<li class="item view">
+							<li class="item view" @click.stop="intoArticle">
 								<i><img src="../assets/icon/view.png"></i>
-								<span>3.6w</span>
+								<span>{{ setNum(viewcount) }}</span>
 							</li>
-							<li class="item like">
+							<li class="item like" @click.stop="likeArticle">
 								<i><img src="../assets/icon/like.png"></i>
-								<span>3.6w</span>
+								<span>{{ setNum(likecount) }}</span>
 							</li>
-							<li class="item comment">
+							<li class="item comment" @click.stop="commentArticle">
 								<i><img src="../assets/icon/comment.png"></i>
-								<span>3.6w</span>
+								<span>{{ setNum(comment) }}</span>
 							</li>
 						</ul>
 					</div>
-					<img class="content-img" src="../assets/1.jpg" />
+					<img class="content-img" :src="coverimg" v-if="isShoeCover" />
 				</div>
 
 				<!-- 关闭按钮 -->
 				<div class="close">
-					<img class="close-icon" src="../assets/icon/close.png" @click="CloseMenuON">
+					<img class="close-icon" src="../assets/icon/close.png" @click.stop="CloseMenuON">
 					<div class="close-menu" v-if="isCloseMenuON">
-						<div class="menu-item" @click="disincline">
+						<div class="menu-item" @click.stop="disincline">
 							<img class="menu-item-icon" src="../assets/icon/1.png" />
 							<div class="menu-item-content">
 								不感兴趣
 							</div>
 						</div>
-						<div class="menu-item" @click="shieldAuthor">
+						<div class="menu-item" @click.stop="shieldAuthor">
 							<img class="menu-item-icon" src="../assets/icon/2.png" />
 							<div class="menu-item-content">
 								屏蔽作者：cike567
 							</div>
 						</div>
-						<div class="menu-item" @click="ShieldMenuOn">
+						<div class="menu-item" @click.stop="ShieldMenuOn">
 							<img class="menu-item-icon" src="../assets/icon/3.png" />
 							<div class="menu-item-content">
 								屏蔽标签
@@ -84,7 +80,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="menu-item" @click="tipOff">
+						<div class="menu-item" @click.stop="tipOff">
 							<img class="menu-item-icon" src="../assets/icon/4.png" />
 							<div class="menu-item-content">
 								举报
@@ -98,13 +94,19 @@
 </template>
 
 <script>
+import myTool from '../utils/myTool'
+
 export default {
 	name: "List",
 	data() {
 		return {
 			isCloseMenuON: false,
 			isShieldMenuON: false,
+			isShoeCover: false,
 			postlabelarr: [],
+			keyword: [],
+
+
 		}
 	},
 	props: {
@@ -124,11 +126,11 @@ export default {
 			type: Number,
 			default: 0
 		},
-		posttitle: {
+		title: {
 			type: String,
 			default: ""
 		},
-		postabstract: {
+		abstract: {
 			type: String,
 			default: ""
 		},
@@ -140,14 +142,18 @@ export default {
 			type: Number,
 			default: 0
 		},
-		commentcount: {
+		comment: {
 			type: Number,
 			default: 0
 		},
 		coverimg: {
 			type: String,
 			default: ""
-		}
+		},
+		keywords: {
+			type: String,
+			default: ""
+		},
 
 
 
@@ -158,28 +164,65 @@ export default {
 		}
 	},
 	methods: {
+		// 测试
 		test() {
 			console.log("test");
 		},
+		// 将后端关键词存为数组
+		getKeyword() {
+			this.keyword = this.keywords.split(",")
+			// console.log(this.keyword)
+		},
+		// 解析数字和时间
+		setNum(number) {
+			return myTool.setNum(number)
+		},
+		setDate(date) {
+			return myTool.setDate(date)
+		},
+		//是否展示封面
+		isShowPhoto() {
+			if (this.coverimg == 'null') {
+				this.isShoeCover = false
+			} else {
+				this.isShoeCover = true
+			}
+		},
+		//关闭按钮相关方法
 		CloseMenuON() {
-			console.log(111);
 			this.isCloseMenuON === true ? this.isCloseMenuON = false : this.isCloseMenuON = true
 		},
 		ShieldMenuOn() {
 			this.isShieldMenuON === true ? this.isShieldMenuON = false : this.isShieldMenuON = true
 		},
-		// close
 		disincline(e) {
-			// 点击不感兴趣后，向后端发送this.userid与postid,postauthor
+			// console.log(e.currentTarget.dataset.posterid);
+			console.log('点击不感兴趣后，向后端发送this.userid与postid,postauthor')
 		},
 		shieldAuthor() {
-			// 点击屏蔽作者后，向后端发送this.userid, postauthor
+			console.log('点击屏蔽作者后，向后端发送this.userid, postauthor')
 		},
 		tipOff() {
-			// 点击举报后，向后端发送this.postid
+			console.log('点击举报后，向后端发送this.postid');
+		},
+		//点击文章相关方法
+		intoAuthor() {
+			console.log("进入用户主页");
+		},
+		intoArticle() {
+			console.log("打开文章");
+		},
+		likeArticle() {
+			console.log("点赞");
+		},
+		commentArticle() {
+			console.log("评论文章");
 		}
 
-
+	},
+	created() {
+		this.getKeyword()
+		this.isShowPhoto()
 	}
 }
 </script>
@@ -301,13 +344,20 @@ export default {
 					}
 				}
 
-				// a:
+				.isshowbot {
+
+					// color: aqua;
+					&::after {
+						display: none;
+					}
+				}
 			}
+
 		}
 
 		.content {
 			display: flex;
-			// width: 100%;
+			width: 100%;
 			padding-bottom: 12px;
 			margin-top: 10px;
 

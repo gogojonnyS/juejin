@@ -1,7 +1,7 @@
 const express = require("express")
 let router = express.Router()
 
-router.post("/getpostlist", require("../controller/post").getpostlist)
+router.post("/getarticle", require("../controller/post").getarticle)
 
 
 

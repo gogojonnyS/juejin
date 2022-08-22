@@ -1,16 +1,8 @@
 <template>
-    <div >
-        <el-input
-            placeholder="探索稀土掘金"
-            v-model="input3"
-            class="input-with-select"
-            size="small"
-        >
-            <el-button
-                slot="append"
-                size="small"
-                icon="el-icon-search"
-            ></el-button>
+    <div id="search-container">
+        <el-input placeholder="探索稀土掘金" v-model="input3"
+            :class="{ 'input-with-select': true, 'el-input-react': issearchbig }" size="small">
+            <el-button slot="append" size="small" icon="el-icon-search"></el-button>
         </el-input>
     </div>
 </template>
@@ -20,24 +12,37 @@ export default {
     data() {
         return {
             input3: "",
-			isActive:false
+            isActive: false,
         };
     },
-	methods:{
-		handlerClass(){
-			this.isActive = !this.isActive;
-		}
-	}
+    props: {
+        issearchbig: {
+            type: Boolean,
+            default: false
+        }
+    },
+    methods: {
+        handlerClass() {
+            this.isActive = !this.isActive;
+        }
+    }
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+#search-container {
 
-.el-input {
-	float: right;
-    width: 250px;
-}
-.input-with-select{
-    background-color: #fff;
+    .el-input {
+        float: right;
+        width: 242px;
+    }
+
+    .el-input-react {
+        width: 362px;
+    }
+
+    .input-with-select {
+        background-color: #fff;
+    }
 }
 </style>
