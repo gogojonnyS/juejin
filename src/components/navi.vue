@@ -3,13 +3,16 @@
         <div class="container">
             <!-- 掘金图标开始-->
             <div>
-                <a href="javascript:;"><img src="../assets/xitujuejin.png" alt="加载失败" /></a>
+                <a href="javascript:;">
+                    <img v-show="windowWidth < 640"
+                        src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/6c61ae65d1c41ae8221a670fa32d05aa.svg" />
+                    <img v-show="windowWidth >= 640" class="logo2" src="../assets/xitujuejin.png" alt="加载失败" /></a>
             </div>
             <!-- 掘金图标开始结束-->
             <!-- 导航部分开始 -->
             <nav style="display:flex;justify-content: space-between;">
                 <!-- 左侧导航列表部分开始 -->
-                <ul class="top-nav" v-if="windowWidth == '>1190'">
+                <ul class="top-nav" v-if="windowWidth > 1190">
                     <li>
                         <router-link exact to="/">首页</router-link>
                     </li>
@@ -36,17 +39,17 @@
                     </ul>
                 </ul>
                 <!-- 左侧导航列表部分结束 -->
-                <div style="width: 0;"></div>
+                <div style="width: 0;padding: 0;margin: 0;"></div>
                 <!-- 右侧组件部分开始 -->
                 <ul class="right">
                     <ul>
                         <!-- 搜索框开始 -->
-                        <search class="search"></search><!-- 搜索框结束 -->
+                        <search class="search" v-show="windowWidth > 350"></search><!-- 搜索框结束 -->
                         <!-- 下拉菜单开始 -->
-                        <scrollMenu class="scrollMenu" v-if="windowWidth !== '<800'"></scrollMenu><!-- 下拉菜单结束 -->
+                        <scrollMenu class="scrollMenu" v-show="windowWidth > 800"></scrollMenu><!-- 下拉菜单结束 -->
                     </ul>
                     <!-- 会员开始 -->
-                    <li class="vip">
+                    <li class="vip" v-show="windowWidth > 960">
                         <a href="javascript:;"><img src="../assets/vip.png" alt="加载失败" /><span>会员</span></a>
                     </li>
                     <!-- 会员结束 -->
@@ -73,7 +76,7 @@ import scrollMenu from "./scrollMenu"; //引入下拉菜单
 export default {
     data() {
         return {
-            windowWidth: ">1190",
+            windowWidth: 1200,
 
         }
     },
@@ -98,24 +101,18 @@ export default {
                 width: window.innerWidth,
                 hight: window.innerHeight
             }
-            console.log(windowInfo);
-            if (windowInfo.width < 1190 && windowInfo.width > 800) {
-                this.windowWidth = "<1190"
-            } else if (windowInfo.width < 800) {
-                this.windowWidth = "<800"
-            } else {
-                this.windowWidth = ">1190"
-            }
+            this.windowWidth = windowInfo.width
         }
     },
     created() {
-        addEventListener('resize', this.debounce(this.toggleTopBar, 500))
+        this.toggleTopBar()
+        addEventListener('resize', this.debounce(this.toggleTopBar, 100))
     },
     mounted() {
-        addEventListener('resize', this.debounce(this.toggleTopBar, 500))
+        addEventListener('resize', this.debounce(this.toggleTopBar, 100))
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.debounce(this.toggleTopBar, 500));
+        window.removeEventListener('resize', this.debounce(this.toggleTopBar, 100));
     }
 };
 </script>
@@ -124,6 +121,7 @@ export default {
 .outer {
     display: flex;
     align-items: center;
+    width: 100%;
     height: 55px;
     border-bottom: 1px solid #efeded;
 
@@ -137,10 +135,17 @@ export default {
         div {
             margin-left: 12px;
             margin-right: 22px;
-            width: 100px;
+            // width: 100px;
 
             a {
-                img {
+                .logo1 {
+                    margin: 0 auto;
+                    // margin-top: 16px;
+                    width: 31px;
+                    height: 24px;
+                }
+
+                .logo2 {
                     margin: 0 auto;
                     // margin-top: 16px;
                     width: 100px;
