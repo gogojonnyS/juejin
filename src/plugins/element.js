@@ -1,21 +1,5 @@
 import Vue from 'vue'
-import {
-	Button,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
-	Input,
-	Container,
-	Header,
-	Main,
-} from 'element-ui'
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.use(Button,)
-Vue.use(Dropdown);
-Vue.use(DropdownMenu);
-Vue.use(DropdownItem);
-Vue.use(Input);
-Vue.use(Container);
-Vue.use(Header);
-Vue.use(Main);
-
+Vue.use(Element)
