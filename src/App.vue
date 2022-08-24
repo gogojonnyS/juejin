@@ -26,6 +26,11 @@ export default {
 </script>
 
 <style>
+html {
+  /* 保持始终出现滚动条，避免100vw与100%不相等的问题出现 */
+  overflow-y: scroll
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,5 +38,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   /* margin-top: 60px; */
+  padding: 0;
+  margin: 0;
 }
 </style>
